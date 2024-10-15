@@ -4,10 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Testing Schedule Availability</title>
-    <!-- Include FullCalendar and dependencies -->
+    
+    <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/main.min.css" rel="stylesheet" />
+
+    <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/main.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/locales-all.min.js"></script>
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -25,37 +29,46 @@
 
     <div id="calendar"></div>
 
+    <!-- Fallback error message if calendar does not load -->
+    <noscript>
+        <p><strong>JavaScript is required for the calendar to function. Please enable JavaScript in your browser.</strong></p>
+    </noscript>
+
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             var calendarEl = document.getElementById('calendar');
-            var calendar = new FullCalendar.Calendar(calendarEl, {
-                initialView: 'dayGridMonth',
-                editable: true,
-                selectable: true,
-                selectHelper: true,
-                headerToolbar: {
-                    left: 'prev,next today',
-                    center: 'title',
-                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
-                },
-                select: function (info) {
-                    var name = prompt("Enter your name:");
-                    var time = prompt("Enter your available time (e.g., 10:00 AM - 12:00 PM):");
+            if (calendarEl) {
+                var calendar = new FullCalendar.Calendar(calendarEl, {
+                    initialView: 'dayGridMonth',
+                    editable: true,
+                    selectable: true,
+                    selectHelper: true,
+                    headerToolbar: {
+                        left: 'prev,next today',
+                        center: 'title',
+                        right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                    },
+                    select: function (info) {
+                        var name = prompt("Enter your name:");
+                        var time = prompt("Enter your available time (e.g., 10:00 AM - 12:00 PM):");
 
-                    if (name && time) {
-                        calendar.addEvent({
-                            title: name + ' (' + time + ')',
-                            start: info.startStr,
-                            end: info.endStr,
-                            allDay: info.allDay
-                        });
-                    }
-                    calendar.unselect();
-                },
-                events: [] // Events can be stored and loaded here
-            });
+                        if (name && time) {
+                            calendar.addEvent({
+                                title: name + ' (' + time + ')',
+                                start: info.startStr,
+                                end: info.endStr,
+                                allDay: info.allDay
+                            });
+                        }
+                        calendar.unselect();
+                    },
+                    events: [] // Events can be stored and loaded here
+                });
 
-            calendar.render();
+                calendar.render();
+            } else {
+                alert('Error: Calendar element not found.');
+            }
         });
     </script>
 </body>
