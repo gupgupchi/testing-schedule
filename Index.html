@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Testing Schedule Availability</title>
+    <!-- Include FullCalendar and dependencies -->
+    <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/main.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/main.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.5/locales-all.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        #calendar {
+            max-width: 900px;
+            margin: 40px auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Team Availability for Testing Schedule</h1>
+    <p>Click on a date to add your name and availability.</p>
+
+    <div id="calendar"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var calendarEl = document.getElementById('calendar');
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                editable: true,
+                selectable: true,
+                selectHelper: true,
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay'
+                },
+                select: function (info) {
+                    var name = prompt("Enter your name:");
+                    var time = prompt("Enter your available time (e.g., 10:00 AM - 12:00 PM):");
+
+                    if (name && time) {
+                        calendar.addEvent({
+                            title: name + ' (' + time + ')',
+                            start: info.startStr,
+                            end: info.endStr,
+                            allDay: info.allDay
+                        });
+                    }
+                    calendar.unselect();
+                },
+                events: [] // Events can be stored and loaded here
+            });
+
+            calendar.render();
+        });
+    </script>
+</body>
+</html>
